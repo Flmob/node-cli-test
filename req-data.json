@@ -1,0 +1,223 @@
+{
+  "allOf": [
+    {
+      "$ref": "#/definitions/CreateRegulationAddressRequest"
+    }
+  ],
+  "definitions": {
+    "CreateRegulationAddressRequest": {
+      "type": "object",
+      "required": [
+        "buildingNumber",
+        "city",
+        "countryCodeA3",
+        "destinationCountryCodeA3",
+        "didType",
+        "salutation",
+        "streetName",
+        "zipCode"
+      ],
+      "properties": {
+        "salutation": {
+          "type": "string",
+          "description": "This is the salutation of the end user for the created address: MR or MS if firstName and lastName are used or COMPANY if companyName is used.",
+          "enum": [
+            "MR",
+            "MS",
+            "COMPANY"
+          ]
+        },
+        "companyName": {
+          "type": "string",
+          "description": "Maximum length: 60. This is the company name for the end user of the created address. It is a mandatory field if the salutation is COMPANY."
+        },
+        "companyDescription": {
+          "type": "string",
+          "description": "Maximum length: 60. This is the company description for the end user of the created address."
+        },
+        "firstName": {
+          "type": "string",
+          "description": "Maximum length: 60. This is the first name for the end user of the created address. It is a mandatory field if the salutation is MR or MS."
+        },
+        "lastName": {
+          "type": "string",
+          "description": "Maximum length: 60. This is the company name for the end user of the created address. It is a mandatory field if the salutation is MR or MS."
+        },
+        "countryCodeA3": {
+          "type": "string",
+          "description": "The country code for the address in its ISO 3166-1 alpha-3 format (e.g. 'GBR' for United Kingdom, 'USA' for United States of America, 'BEL' for Belgium, etc.)."
+        },
+        "city": {
+          "type": "string",
+          "description": "Maximum length: 60. This is the city of the end user's address. Note that sometimes the city and zip code will have to match the DID's area code for instance in Germany (DEU), Croatia (HRV), South Korea (KOR), etc. To know whether this is required, you should check the local address requirements indicated in the listDidGroup method (regulationRequirement.addressType=LOCAL). In those cases the listZipCodes method should be used to retrieve a proper city and zip code for the DID's area code."
+        },
+        "zipCode": {
+          "type": "string",
+          "description": "Maximum length: 10. This is the zip code of the end user's address. Note that sometimes the city and zip code will have to match the DID's area code for instance in Germany (DEU), Croatia (HRV), South Korea (KOR), etc. To know whether this is required, you should check the local address requirements indicated in the listDidGroup method (regulationRequirement.addressType=LOCAL). In those cases the listZipCodes method should be used to retrieve a proper city and zip code for the DID's area code."
+        },
+        "streetName": {
+          "type": "string",
+          "description": "Maximum length: 50. This is the name of the end user's street."
+        },
+        "buildingNumber": {
+          "type": "string",
+          "description": "Maximum length: 10. This is the number of the building or the street number of the address."
+        },
+        "buildingLetter": {
+          "type": "string",
+          "description": "Maximum length: 10. This is the building letter which can also be used for additional information on the street number."
+        },
+        "customerReference": {
+          "type": "string",
+          "description": "Maximum length: 60. This is a parameter that can be used for your own reference, e.g. to uniquely identify one of your customers."
+        },
+        "phoneNumber": {
+          "type": "string",
+          "description": "This field is to be used to provide end-user telephone number (for example, for China or Bahrain). Format is +xxnumber"
+        },
+        "extraFields": {
+          "$ref": "#/definitions/ExtraFields"
+        },
+        "didType": {
+          "type": "string",
+          "description": "This is the DID's type (GEOGRAPHIC, NATIONAL, etc.). This information is required before the address is created since the address requirements change based on this information. The system will perform automatically a first address validation based on the DID's country and type.",
+          "enum": [
+            "GEOGRAPHIC",
+            "TOLL_FREE",
+            "NATIONAL",
+            "MOBILE",
+            "INUM",
+            "SHARED_COST",
+            "SPECIAL"
+          ]
+        },
+        "destinationCountryCodeA3": {
+          "type": "string",
+          "description": "This is country code A3 of the DID's country (USA, BEL, GBR, DEU, etc.). This information is required before the address is created since the address requirements change based on this information. The system will perform automatically a first address validation based on the DID's country and type."
+        },
+        "identityDocumentProof": {
+          "$ref": "#/definitions/IdentityDocumentProof"
+        }
+      },
+      "description": "Model for Create Regulation Address request"
+    },
+    "IdentityDocumentProof": {
+      "type": "object",
+      "required": [
+        "identityDocumentNumber",
+        "identityDocumentType",
+        "nationality"
+      ],
+      "properties": {
+        "nationality": {
+          "type": "string",
+          "description": "Maximum length: 60. There is no specific format for this field. Either full country name or the ISO-3166-1 alpha-3 code is acceptable."
+        },
+        "identityDocumentType": {
+          "type": "string",
+          "description": "Mandatory for South Africa and Italy. Only BUSINESS_REGISTRATION is applicable for ZAF",
+          "enum": [
+            "PASSPORT",
+            "NATIONAL_ID_CARD",
+            "BUSINESS_REGISTRATION"
+          ]
+        },
+        "identityDocumentNumber": {
+          "type": "string",
+          "description": "Document number as seen on the ID proof document attached. Maximum length: 60. Mandatory for South Africa and Italy."
+        },
+        "issuingAuthority": {
+          "type": "string",
+          "description": "Name of the issuing authority as seen on the ID proof document attached. Maximum length: 60. Mandatory for Italy."
+        },
+        "issuingDate": {
+          "type": "string",
+          "description": "Issuing date as seen on the ID proof document attached. Maximum length: 10. Mandatory for Italy - Format is yyyy-mm-dd. Has to be a date in the past."
+        }
+      },
+      "description": "Model for proof of ID document. Required when the `countryCodeA3` is `FRA`(France) and `didType` is `GEOGRAPHIC` or `destinationCountryCodeA3` is set as `ZAF` (South Africa) or `ITA` (Italy)"
+    },
+    "ExtraFields": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "Italy / GEOGRAPHIC and TOLL_FREE / String, maximum length: 60. Mandatory for Company end user only."
+        },
+        "province": {
+          "type": "string",
+          "description": "Italy / GEOGRAPHIC and TOLL_FREE / String, maximum length: 60. Optional field."
+        },
+        "firstName": {
+          "type": "string",
+          "description": "Italy / GEOGRAPHIC and TOLL_FREE / String, maximum length: 60. Mandatory for Company end user only."
+        },
+        "lastName": {
+          "type": "string",
+          "description": "Italy / GEOGRAPHIC and TOLL_FREE / String, maximum length: 60. Mandatory for Company end user only."
+        },
+        "nationality": {
+          "type": "string",
+          "description": "Spain / Mobile / String, maximum length: 60. The exact format can be chosen freely as long as it allows a human to understand it. We recommend using the full country name but the ISO-3166-1 alpha-3 code is acceptable if it is easier to process by your system.",
+          "minLength": 0,
+          "maxLength": 60
+        },
+        "streetCode": {
+          "type": "string",
+          "description": "Denmark / ALL / String, maximum length: 4.",
+          "minLength": 0,
+          "maxLength": 4
+        },
+        "municipalityCode": {
+          "type": "string",
+          "description": "Denmark / ALL / String, maximum length: 4.",
+          "minLength": 0,
+          "maxLength": 4
+        },
+        "idType": {
+          "type": "string",
+          "description": "Spain / Mobile / DNI, NIE, NIF, PASSPORT. Only required for personal addresses (salutation is either MR or MS).",
+          "enum": [
+            "DNI",
+            "NIF",
+            "NIE",
+            "PASSPORT"
+          ]
+        },
+        "dateOfBirth": {
+          "type": "string",
+          "description": "Italy / GEOGRAPHIC and TOLL_FREE / String (yyyy-mm-dd), maximum length: 10. Validation made for age > 18 years."
+        },
+        "placeOfBirth": {
+          "type": "string",
+          "description": "Italy / GEOGRAPHIC and TOLL_FREE / String, maximum length: 60. Both City and country of birth is expected."
+        },
+        "companyVatNumber": {
+          "type": "string",
+          "description": "Italy / GEOGRAPHIC and TOLL_FREE / String, maximum length: 60. Mandatory for Company end user only."
+        },
+        "taxCode": {
+          "type": "string",
+          "description": "Italy / GEOGRAPHIC and TOLL_FREE / String, maximum length: 60. Mandatory field."
+        },
+        "idNumber": {
+          "type": "string",
+          "description": "Spain / Mobile / String, maximum length: 60. Only required for personal addresses (salutation is either MR or MS), additional validation is performed depending on the type of ID. DNI: 8 digits followed by 1 letter / NIE: 1 letter (X,Y or Z), followed by 7 digits, followed by 1 letter / NIF: 8 digits followed by 1 letter / PASSPORT: no additional validation.",
+          "minLength": 0,
+          "maxLength": 60
+        },
+        "fiscalIdentificationCode": {
+          "type": "string",
+          "description": "Spain / Mobile / String, maximum length: 60. Only required for professional addresses (salutation is COMPANY).",
+          "minLength": 0,
+          "maxLength": 60
+        },
+        "state": {
+          "type": "string",
+          "description": " Italy / GEOGRAPHIC and TOLL_FREE / String, maximum length: 60. Optional field."
+        }
+      },
+      "description": "These are extra address parameters that are required in certain countries and for certain DID types."
+    }
+  }
+}

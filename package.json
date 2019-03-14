@@ -1,0 +1,17 @@
+{
+  "name": "cli-test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Flmob",
+  "license": "ISC",
+  "dependencies": {
+    "base-64": "^0.1.0",
+    "commander": "^2.19.0",
+    "inquirer": "^6.2.2",
+    "node-fetch": "^2.3.0"
+  }
+}
